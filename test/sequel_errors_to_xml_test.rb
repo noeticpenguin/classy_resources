@@ -1,6 +1,4 @@
 require File.dirname(__FILE__) + '/test_helper'
-require 'sinatra'
-require 'sinatra/test/unit'
 require File.dirname(__FILE__) + '/fixtures/sequel_test_app'
 require 'activesupport'
 

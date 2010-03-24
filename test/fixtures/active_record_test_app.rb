@@ -1,7 +1,7 @@
 require 'rubygems'
-gem 'activerecord', '2.2.2'
+gem 'activerecord', '~> 2.2.3'
 require 'activerecord'
-require 'sinatra'
+require 'sinatra/base'
 require 'classy_resources/active_record'
 
 ActiveRecord::Base.configurations = {'sqlite3' => {:adapter  => 'sqlite3', 
@@ -31,13 +31,18 @@ class Comment < ActiveRecord::Base
   belongs_to :post
 end
 
-set :raise_errors, false
+class ActiveRecordTestApp < Sinatra::Base
+  register ClassyResources
+  helpers  ClassyResources::ActiveRecord
 
-define_resource :posts, :collection => [:get, :post],
-                        :member     => [:get, :put, :delete],
-                        :formats    => [:xml, :json]
+  set :raise_errors,    false
+  set :show_exceptions, false
 
-define_resource :comments, :collection => [:get, :post]
+  define_resource :posts, :collection => [:get, :post],
+                          :member     => [:get, :put, :delete],
+                          :formats    => [:xml, :json]
 
-use ClassyResources::PostBodyParams
+  define_resource :comments, :collection => [:get, :post]
 
+  use ClassyResources::PostBodyParams
+end

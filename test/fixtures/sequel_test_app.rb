@@ -1,9 +1,10 @@
 require 'rubygems'
-require 'sinatra'
+require 'sinatra/base'
 require 'sequel'
 require 'classy_resources/sequel'
 
 Sequel::Model.db = Sequel.sqlite
+Sequel::Model.plugin :validation_class_methods
 
 Sequel::Model.db.instance_eval do
   create_table! :users do
@@ -28,9 +29,15 @@ class Subscription < Sequel::Model(:subscriptions)
   validates_presence_of :user_id
 end
 
-set :raise_errors, false
+class SequelTestApp < Sinatra::Base
+  register ClassyResources
+  helpers  ClassyResources::Sequel
 
-define_resource :users, :collection => [:get, :post],
-                        :member     => [:put, :delete, :get]
+  set :raise_errors,    false
+  set :show_exceptions, false
 
-define_resource :subscriptions, :collection => [:get, :post]
+  define_resource :users, :collection => [:get, :post],
+                          :member     => [:put, :delete, :get]
+
+  define_resource :subscriptions, :collection => [:get, :post]
+end

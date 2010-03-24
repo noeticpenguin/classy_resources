@@ -20,11 +20,12 @@ module ClassyResources
       object.destroy
     end
 
-    error ::ActiveRecord::RecordNotFound do
-      response.status = 404
+    def self.included(app)
+      app.error ::ActiveRecord::RecordNotFound do
+        response.status = 404
+      end
     end
   end
 end
 
-include ClassyResources::ActiveRecord
-
+Sinatra.helpers ClassyResources::ActiveRecord

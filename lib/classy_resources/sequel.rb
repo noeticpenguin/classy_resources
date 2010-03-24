@@ -26,10 +26,12 @@ module ClassyResources
       object.destroy
     end
 
-    error ResourceNotFound do
-      response.status = 404
+    def self.included(app)
+      app.error ResourceNotFound do
+        response.status = 404
+      end
     end
   end
 end
 
-include ClassyResources::Sequel
+Sinatra.helpers ClassyResources::Sequel
