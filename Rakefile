@@ -11,11 +11,11 @@ begin
     s.homepage = "http://github.com/giraffesoft/classy_resources"
     s.description = "TODO"
     s.authors = ["James Golick"]
-    s.add_dependency "activesupport", "2.2.2"
-    s.add_dependency "sinatra-sinatra", "~>0.9.0.4"
+    s.add_dependency "activesupport", "~> 2.2.3"
+    s.add_dependency "sinatra", "~> 1.0.0"
   end
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler not available. Install it with: sudo gem install jeweler"
 end
 
 Rake::TestTask.new(:active_record) do |t|
