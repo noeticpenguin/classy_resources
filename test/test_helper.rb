@@ -1,11 +1,14 @@
-require File.dirname(__FILE__) + '/../lib/classy_resources'
 require 'rubygems'
 require 'test/unit'
 require 'context'
 require 'zebra'
 require 'mocha'
+require 'rack/test'
+require File.dirname(__FILE__) + '/../lib/classy_resources'
 
 class Test::Unit::TestCase
+  include Rack::Test::Methods
+
   protected
     def create_post(opts = {})
       Post.create!({:title => 'awesome'}.merge(opts))
