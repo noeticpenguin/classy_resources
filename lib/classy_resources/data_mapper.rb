@@ -1,7 +1,15 @@
+require 'dm-core'
+require 'json'
+require 'dm-serializer'
 module ClassyResources
   module DataMapper
-    def load_collection(resource)
-      class_for(resource).all
+    def load_collection(resource, params = nil)
+      if params.nil?
+        class_for(resource).all.to_json
+      else
+        finder_method = "find_by_" + params.keys.join("_and_")
+        class_for(resource).send(finder_method, params.values).to_json
+      end
     end
 
     def build_object(resource, object_params)
@@ -21,7 +29,7 @@ module ClassyResources
     end
 
     def self.included(app)
-      app.error ObjectNotFoundError do
+      app.error ::DataMapper::ObjectNotFoundError do
         response.status = 404
       end
     end
