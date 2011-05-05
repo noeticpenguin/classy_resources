@@ -21,7 +21,7 @@ module ClassyResources
     end
 
     def self.included(app)
-      app.error ::DME::RecordNotFound do
+      app.error ObjectNotFoundError do
         response.status = 404
       end
     end
