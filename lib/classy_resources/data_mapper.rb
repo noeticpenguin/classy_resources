@@ -1,7 +1,7 @@
 module ClassyResources
-  module ActiveRecord
+  module DataMapper
     def load_collection(resource)
-      class_for(resource).find(:all)
+      class_for(resource).all
     end
 
     def build_object(resource, object_params)
@@ -21,11 +21,11 @@ module ClassyResources
     end
 
     def self.included(app)
-      app.error ::ActiveRecord::RecordNotFound do
+      app.error ::DME::RecordNotFound do
         response.status = 404
       end
     end
   end
 end
 
-Sinatra.helpers ClassyResources::ActiveRecord
+Sinatra.helpers ClassyResources::DataMapper
