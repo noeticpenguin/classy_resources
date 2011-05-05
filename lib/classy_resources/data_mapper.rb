@@ -13,7 +13,7 @@ module ClassyResources
     end
 
     def build_object(resource, object_params)
-      class_for(resource).new(object_params)
+      class_for(resource).new(object_params).save
     end
 
     def load_object(resource, id)
