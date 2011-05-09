@@ -1,14 +1,16 @@
 require 'dm-core'
 require 'json'
 require 'dm-serializer'
+require 'dm-ar-finders'
 module ClassyResources
   module DataMapper
-    def load_collection(resource, params = nil)
-      if params.nil?
-        class_for(resource).all.to_json
+    def load_collection(resource)
+      if self.params.empty?
+        class_for(resource).all
       else
-        finder_method = "find_by_" + params.keys.join("_and_")
-        class_for(resource).send(finder_method, params.values).to_json
+        #make the param hash something datamapper can handle natively, namely a hash with symbol based keys.
+        params = self.params.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo} 
+        class_for(resource).all(params)
       end
     end
 
