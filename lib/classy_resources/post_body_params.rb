@@ -31,6 +31,7 @@ module ClassyResources
       when APPLICATION_JSON
         env.update(FORM_HASH => JSON.parse(env[POST_BODY].read), FORM_INPUT => env[POST_BODY])
       when APPLICATION_XML
+        ap "IN HERE!"
         env.update(FORM_HASH => Hash.from_xml(env[POST_BODY].read), FORM_INPUT => env[POST_BODY])
       end
       @app.call(env)

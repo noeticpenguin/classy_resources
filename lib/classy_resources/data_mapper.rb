@@ -2,6 +2,7 @@ require 'dm-core'
 require 'json'
 require 'dm-serializer'
 require 'dm-ar-finders'
+
 module ClassyResources
   module DataMapper
     def load_collection(resource)
@@ -15,7 +16,8 @@ module ClassyResources
     end
 
     def build_object(resource, object_params)
-      class_for(resource).new(object_params).save
+      params = self.params.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo} 
+      class_for(resource).new(object_params)
     end
 
     def load_object(resource, id)
