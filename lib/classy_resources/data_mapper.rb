@@ -16,8 +16,8 @@ module ClassyResources
     end
 
     def build_object(resource, object_params)
-      params = self.params.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo} 
-      class_for(resource).new(object_params)
+      params = object_params.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo} 
+      class_for(resource).new(params)
     end
 
     def load_object(resource, id)

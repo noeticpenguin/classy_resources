@@ -30,9 +30,12 @@ module ClassyResources
     def get_post_hash(body)
       case env['CONTENT_TYPE']
       when /application\/json.*/
+        # puts body.inspect
         JSON.parse(body)
       when /application\/xml.*/
         Hash.from_xml(body)
+      else
+        raise "Unrecognized content_type: we only accept xml and json"
       end
     end
 
@@ -84,13 +87,11 @@ module ClassyResources
       
       def define_collection_post(resource, format)
         app.post collection_url_for(resource, format) do
-          ap "got to the post method #{__LINE__}"
           set_content_type(format)
           request.body.rewind
           params = get_post_hash(request.body.read)
-          params_to_send = (format =~ /application\/xml.*/) ? params[resource.to_s.singularize] : params
+          params_to_send = params[resource.to_s.singularize] || params
           object = build_object(resource, params_to_send || {})
-          ap object
           if object.is_a?(resource.to_s.singularize.classify.constantize) && object.save
             response['location'] = object_url_for(resource, format, object)
             response.status      = 201
