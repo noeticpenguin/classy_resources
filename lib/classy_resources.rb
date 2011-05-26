@@ -114,15 +114,17 @@ module ClassyResources
       def define_member_put(resource, format)
         app.put object_route_url(resource, format) do
           set_content_type(format)
-          object = load_object(resource, params[:id])
-          update_object(object, params[resource.to_s.singularize])
-
-          if object.valid?
-            object.save
+          request.body.rewind
+          params = get_post_hash(request.body.read)
+          params_to_send = params[resource.to_s.singularize] || params
+          object = build_object(resource, params_to_send || {})
+          if object.is_a?(resource.to_s.singularize.classify.constantize) && object.save
+            response['location'] = object_url_for(resource, format, object)
+            response.status      = 201
             serialize(object, format)
           else
-            response.status = 422
-            serialize(object.errors, format)
+            response.status      = 422
+            serialize(object, format)
           end
         end
       end
