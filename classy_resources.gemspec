@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{classy_resources}
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Golick","Justin Lynn"]
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/justinlynn/classy_resources}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.1}
-  s.summary = %q{Instant ActiveResource compatible resources. Think resource_controller, for sinatra. Now modified for gemcutter.org awesomeness.}
+  s.summary = %q{Instant ActiveResource or datamapper compatible resources. Think resource_controller, for sinatra. }
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
