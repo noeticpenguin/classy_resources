@@ -90,7 +90,11 @@ module ClassyResources
           set_content_type(format)
           request.body.rewind
           params = get_post_hash(request.body.read)
-          params_to_send = params[resource.to_s.singularize] || params
+          if format == :xml || format =~ /application\/xml.*/ then 
+            params_to_send = params[resource.to_s.singularize]
+          else
+            params_to_send = params
+          end
           object = build_object(resource, params_to_send || {})
           if object.is_a?(resource.to_s.singularize.classify.constantize) && object.save
             response['location'] = object_url_for(resource, format, object)
