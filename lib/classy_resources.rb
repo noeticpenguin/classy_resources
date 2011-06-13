@@ -112,8 +112,11 @@ module ClassyResources
         app.get object_route_url(resource, format) do
           set_content_type(format)
           object = load_object(resource, params[:id])
-          response.status = 404 if object.nil?
-          serialize(object, format) unless object.nil?
+          if object.nil?
+            response.status = 404
+          else
+            serialize(object, format)
+          end
         end
       end
 
