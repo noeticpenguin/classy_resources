@@ -90,6 +90,7 @@ module ClassyResources
           set_content_type(format)
           request.body.rewind
           params = get_post_hash(request.body.read)
+          ap format
           if format == :xml || format =~ /application\/xml.*/ then 
             params_to_send = params[resource.to_s.singularize]
           else
@@ -111,7 +112,8 @@ module ClassyResources
         app.get object_route_url(resource, format) do
           set_content_type(format)
           object = load_object(resource, params[:id])
-          serialize(object, format)
+          response.status = 404 if object.nil?
+          serialize(object, format) unless object.nil?
         end
       end
 
